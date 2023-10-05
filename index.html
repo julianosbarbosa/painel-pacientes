@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Call Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    #panel {
+      border: 5px solid #3498db;
+      border-radius: 15px;
+      width: 100%;
+      margin: auto;
+      background-color: #f0f0f0;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 54px;
+      margin-bottom: 20px;
+      color: #3498db;
+    }
+
+    #currentNumber {
+      height: 52vh;
+      font-size: 72px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    #instructions {
+      font-size: 24px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div id="panel">
+    <h1>Pacientes para Triagem</h1>
+    <div id="currentNumber">Loading</div>
+    <div id="instructions">Pressione Enter para chamar o próximo número</div>
+  </div>
+
+  <script>
+    let currentNumber = 1;
+
+    document.addEventListener('keydown', (event) => {
+      // Check if the Enter key (key code 13) was pressed
+      if (event.keyCode === 13) {
+        currentNumber++;
+        updateCurrentNumber();
+      }
+
+      // Check if the Backspace key (key code 8) was pressed
+      if (event.keyCode === 8) {
+        if (currentNumber > 1) {
+          currentNumber--;
+          updateCurrentNumber();
+        }
+      }
+
+      // Check if the Space key (key code 32) was pressed
+      if (event.keyCode === 32) {
+        // Prevent the space bar from scrolling the page
+        event.preventDefault();
+
+        // Listen for the next key (digit) press
+        document.addEventListener('keydown', handleNextDigit);
+      }
+    });
+
+    function handleNextDigit(event) {
+      const digit = parseInt(event.key, 10);
+      if (!isNaN(digit)) {
+        currentNumber = digit;
+        updateCurrentNumber();
+
+        // Remove the event listener to avoid multiple calls
+        document.removeEventListener('keydown', handleNextDigit);
+      }
+    }
+
+    function updateCurrentNumber() {
+      const currentNumberElement = document.getElementById('currentNumber');
+      currentNumberElement.textContent = `Senha: ${currentNumber}`;
+    }
+  </script>
+</body>
+</html>
